@@ -1,0 +1,46 @@
+<% include ../partials/header %> 
+ 
+ <div class="ui main text container">
+    <div class="ui huge header">Task Logger</div>
+    <div class="ui top  attached segment">
+        <table class="ui very basic table">
+          <thead>
+            <tr>
+              <th class="seven wide">Task</th>
+              <th class="three wide">Page</th>
+              <th class="three wide">Status</th>                  
+              <th class="three wide">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% tasks.forEach(function(task){ %>    
+                          
+                <tr>
+
+                  <% if(task._id.equals(edittask._id))  {%>
+                    <form class="ui form" action="/tasks/<%=task._id%>?_method=PUT" method="POST">
+                      <td><div class="ui fluid input focus"><input type="text" value="<%= task.content %>" name="task[content]" ></div></td>
+                      <td><div class="ui fluid input focus"><input type="text" value="<%= task.page %>" name="task[page]" ></div></td>
+                      <td><div class="ui fluid input focus"><input type="text" value="<%= task.status %>" name="task[status]" ></div></td>
+                      <td>                                   
+                        <div class="ui right floated basic small icon buttons">
+                          <button class="ui button" type="submit" name="save_button" ><i class="blue check icon"></i></button>
+                          <button class="ui button" type="submit" name="cancel_button" ><i class="orange delete icon"></i></button>
+                        </div>                                     
+                      </td>
+                    </form>
+                  <% } else { %> 
+                    <td><%- task.content %></td>
+                    <td><%- task.page %></td>
+                    <td><%- task.status %></td>
+                    <td>                                  
+                    </td>
+                  <% } %>
+                </tr>              
+            <% }) %>
+          </tbody>
+        </table>            
+    </div>
+</div>
+
+<% include ../partials/footer %>

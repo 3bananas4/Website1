@@ -1,0 +1,100 @@
+<% include ../partials/header %> 
+ 
+ <div class="ui main text container">
+    <div class="ui huge header">Task Logger</div>
+    <div class="ui top attached tabular menu">
+
+        <a class="active item" data-tab="All">All</a>
+        <%  pages.forEach(function(page){%>
+            <a class="item" data-tab="<%=page.toLowerCase()%>"><%=page%></a>
+        <% }) %>
+    </div>
+    <div class="ui bottom attached active tab segment" data-tab="All">
+        <div class="ui top  attached segment">
+            <table class="ui very basic table">
+              <thead>
+                <tr>
+                  <th class="six wide">Task</th>
+                  <th class="two wide">Page</th>
+                  <th class="three wide">Created</th>
+                  <th class="two wide">Status</th>                  
+                  <th class="three wide">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% tasks.forEach(function(task){ %>    
+                  <form class="ui form" action="/tasks/<%=task._id%>?_method=PUT" method="POST">            
+                    <tr>
+                      <td><%- task.content %></td>
+                      <td><%- task.page %></td>
+                      <td><%- task.stamp.toDateString() %></td>
+                      <td><%- task.status %></td>
+                      <td>                    
+                          <div class="ui right floated basic small icon buttons">
+                            <button class="ui button" type="submit" name="close_button" ><i class="green check icon"></i></button>
+                            <button class="ui button" type="submit" name="edit_button" ><i class="violet edit icon"></i></button>
+                            <button class="ui button" type="submit" name="delete_button" ><i class="red delete icon"></i></button>
+                          </div>                    
+                      </td>
+                    </tr>
+                  </form>
+                <% }) %>
+              </tbody>
+            </table>            
+        </div>
+    </div>
+    <%  pages.forEach(function(page){%>
+        <div class="ui bottom attached tab segment" data-tab="<%= page.toLowerCase() %>">
+            <div class="ui top  attached segment">
+            <table class="ui very basic table">
+              <thead>
+                <tr>
+                  <th class="six wide">Task</th>
+                  <th class="two wide">Page</th>
+                  <th class="three wide">Created</th>
+                  <th class="two wide">Status</th>                  
+                  <th class="three wide">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% tasks.forEach(function(task){ %>  
+                    <% if(task.page===page) {%>  
+                      <form class="ui form" action="/tasks/<%=task._id%>?_method=PUT" method="POST">            
+                        <tr>
+                          <td><%- task.content %></td>
+                          <td><%- task.page %></td>
+                          <td><%- task.stamp.toDateString() %></td>
+                          <td><%- task.status %></td>
+                          <td>                    
+                              <div class="ui right floated basic small icon buttons">
+                                <button class="ui button" type="submit" name="close_button" ><i class="green check icon"></i></button>
+                                <button class="ui button" type="submit" name="edit_button" ><i class="violet edit icon"></i></button>
+                                <button class="ui button" type="submit" name="delete_button" ><i class="red delete icon"></i></button>
+                              </div>                    
+                          </td>
+                        </tr>
+                      </form>
+                    <% }%>
+                <% }) %>
+              </tbody>
+            </table>            
+        </div>
+        </div>
+    <% }) %>
+    
+</div>
+
+<script>
+    $('.item').click( function(){
+        $('.active').removeClass('active');
+        $(this).addClass('active');
+
+        var y = $(this).attr("data-tab");
+
+        $("div[data-tab='"+y+"']").addClass('active');
+    });
+
+
+
+</script>
+<% include ../partials/footer %>
